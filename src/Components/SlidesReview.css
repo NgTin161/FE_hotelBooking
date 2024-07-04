@@ -1,0 +1,12 @@
+.review-card {
+  width: 350px;
+  border: 1px solid green;
+  cursor: pointer;
+  margin-bottom: 20px; /* Optional: Adjust spacing between cards */
+}
+
+.review-card p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
