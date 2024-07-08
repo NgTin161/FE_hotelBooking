@@ -121,7 +121,7 @@ const LayoutOwner = () => {
             </Menu>
           } trigger={['click']}>
             <span style={{ marginRight: '20px' }}>Xin chào,
-              {user?.email}
+              {user?.fullName}
             </span>
           </Dropdown>
         </Header>

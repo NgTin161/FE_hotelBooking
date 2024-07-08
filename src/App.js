@@ -28,6 +28,9 @@ import ConfirmPayment from './user/ConfirmPayment';
 import CheckOut from './user/CheckOut';
 import HistoryUser from './user/HistoryUser';
 
+import Profile from './user/Profile';
+
+
 
 
 
@@ -44,7 +47,6 @@ function App() {
                     <Route path="/detail/:id" element={<Details />}></Route>
                     <Route path="/checkout" element={<CheckOut />}></Route>
 
-
                     <Route path="/registerhotel" element={<HotelRegister />}></Route>
                     <Route path="/confirm-payment" element={<ConfirmPayment />}></Route>
                 </Route>
@@ -52,6 +54,8 @@ function App() {
 
                 <Route path="/user" element={<PrivateRoute><Layout /></PrivateRoute>}>
                     <Route path="history" element={<HistoryUser />} />
+                    <Route path="profile" element={<Profile />}></Route>
+
 
                 </Route>
 
@@ -62,16 +66,14 @@ function App() {
                     <Route path="roomtype" element={<RoomType />} />
                 </Route>
 
-                <Route path="/checkout" element={<ConfirmPayment />}></Route>
+
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/register" element={<Register />}></Route>
 
 
-                <Route path="/Review" element={<Review />}></Route>
 
                 <Route path="/forgot-password" element={<FogotPass />}></Route>
                 <Route path="/reset-password" element={<ConfirmPass />}></Route>
-                {/* <Route path="/HistoryBooking" element={<HistoryBooking />}></Route> */}
 
 
 

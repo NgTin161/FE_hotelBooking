@@ -123,6 +123,7 @@ const { Option } = Select;
 // ];
 
 const HistoryUser = () => {
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [sortType, setSortType] = useState('newest');
@@ -225,11 +226,20 @@ const HistoryUser = () => {
     }
   });
 
+  const formatCurrency = (amount) => {
+    return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  };
 
   const handleSortChange = (value) => {
     setSortType(value);
   };
 
+  const shouldShowReviewButton = (booking) => {
+    const currentDate = moment();
+    const checkoutDate = moment(booking.checkOutDate);
+
+    return (booking.status === 0 && checkoutDate.isSameOrBefore(currentDate, 'day')) || booking.status === 1;
+  };
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }} >
@@ -237,7 +247,7 @@ const HistoryUser = () => {
           Lịch sử đặt phòng
         </Typography.Title>
 
-        <Select defaultValue="newest" className='custom-select' style={{ textAlign: 'center' }} onChange={handleSortChange}>
+        <Select defaultValue="newest" className='' style={{ textAlign: 'center' }} onChange={handleSortChange}>
           <Option value="newest">Mới nhất</Option>
           <Option value="oldest">Cũ nhất</Option>
         </Select>
@@ -248,10 +258,8 @@ const HistoryUser = () => {
             key={index}
             style={{ margin: 10, width: 350 }}
             type="inner"
-            title={<div>Mã Booking: {booking.bookingCode}   </div>}
-            extra={<div style={{ marginLeft: '10px' }}>
-              <Button className='button-user' onClick={() => showModal(booking)}>Xem chi tiết</Button>
-            </div>}
+            title={<div>Booking ID: {booking.bookingCode}   </div>}
+
           >
 
             <p>Khách hàng: {booking.customerName}</p>
@@ -261,6 +269,12 @@ const HistoryUser = () => {
             <p>Ngày checkout: {formatDate(booking.checkOutDate)}</p>
             <p>Tổng cộng: {formatCurrency(booking.totalPrice)}</p>
             <p>Trạng thái: {getStatusTag(booking.status)}</p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 10 }}>
+              <Button className='button-user' onClick={() => showModal(booking)}>Xem chi tiết</Button>
+              {shouldShowReviewButton(booking) && (
+                <Button className='button-user' onClick={() => navigate(`/review?email=${booking.email}&bookingcode=${booking.bookingCode}`)}>Đánh giá</Button>
+              )}
+            </div>
           </Card >
         ))}
       </div >
@@ -320,8 +334,5 @@ const HistoryUser = () => {
   );
 };
 
-const formatCurrency = (amount) => {
-  return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-};
 
 export default HistoryUser;

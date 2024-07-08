@@ -219,6 +219,9 @@ const RoomTypesTable = ({ roomTypes, hotelDetail, checkinDate, checkoutDate, adu
 
     return discount;
   };
+
+  const isBookingDisabled = totalPrice <= 0;
+
   if (!roomTypes) {
     return <SpinComponents />;
   }
@@ -243,7 +246,7 @@ const RoomTypesTable = ({ roomTypes, hotelDetail, checkinDate, checkoutDate, adu
 
 
         <h4 style={{ marginRight: '20px' }}>Tổng số tiền: {totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</h4>
-        <Button type="primary" onClick={handleConfirmBooking} style={{ width: '200px' }}>
+        <Button type="primary" disabled={isBookingDisabled} onClick={handleConfirmBooking} style={{ width: '200px' }}>
           Xác nhận đặt phòng
         </Button>
       </div>

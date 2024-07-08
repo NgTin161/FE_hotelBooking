@@ -9,7 +9,7 @@ import TextArea from 'antd/es/input/TextArea';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { axiosJson } from '../axios/axiosCustomize';
-import { AuthContext, AuthProvider, useAuth } from '../axios/AuthContext';
+import { AuthContext } from '../axios/AuthContext';
 import { useContext } from 'react';
 
 import { jwtDecode } from 'jwt-decode';
@@ -222,7 +222,7 @@ const CheckOut = () => {
     const data = bookingData?.bookingDetails?.map((detail, index) => ({
         ...detail,
         index,
-        key: index, // Or use a unique identifier like detail.roomTypeId if available
+        key: index,
     }));
 
     const totalPrice = bookingData?.totalPrice || 0;

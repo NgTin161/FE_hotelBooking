@@ -68,18 +68,20 @@ const Register = () => {
             console.log('Response:', response);
 
             if (response.status == 200) {
-                toast.success('Đăng ký thành công. Vui lòng đăng nhập lại')
+                toast.success('Đăng ký thành công. Vui lòng tiền hành đăng nhập')
                 // localStorage.setItem('jwt', response.data.token);
                 // Redirect to home or dashboard
-                window.location.href = '/login';
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
 
             }
             else {
-                message.error('Sai tên đăng nhập hoặc mật khẩu');
+                toast.error('Đã xảy ra lỗi khi đăng nhập');
             }
         } catch (error) {
             console.error('Error:', error);
-            message.error('Đã xảy ra lỗi khi đăng nhập');
+            toast.error('Đã xảy ra lỗi khi đăng nhập');
         }
     };
 
@@ -101,9 +103,9 @@ const Register = () => {
     return (
         <>
             <div className='Container-header'>
-                <div className="grid-container" style={{ marginLeft: '55px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Link to="/">
-                        <div className='logo' />
+                        <div style={{ marginTop: -12 }} className='logo' />
                     </Link>
                 </div>
             </div>

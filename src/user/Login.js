@@ -48,7 +48,9 @@ const Login = () => {
             // Lưu token và xử lý đăng nhập thành công
             // localStorage.setItem('jwt', result.data.token);
 
-            window.location.href = '/';
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 2000);
 
         } catch (error) {
             console.error('Error:', error);

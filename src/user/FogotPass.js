@@ -49,9 +49,9 @@ const FogotPass = () => {
     return (
         <>
             <div className='Container-header'>
-                <div className="grid-container" style={{ marginLeft: '55px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Link to="/">
-                        <div className='logo' />
+                        <div style={{ marginTop: -12 }} className='logo' />
                     </Link>
                 </div>
             </div>

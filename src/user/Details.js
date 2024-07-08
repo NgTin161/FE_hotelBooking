@@ -65,7 +65,7 @@ const Details = () => {
 
                 console.log(hotelId, checkinDate, checkoutDate, adults, numberOfChildren, rooms);
                 console.log('new room', response.data);
-                setRoomTypes(response.data); // Cập nhật state với dữ liệu mới
+                setRoomTypes(response.data);
                 toast.success('Cập nhật thành công');
 
             } catch (error) {
@@ -80,8 +80,6 @@ const Details = () => {
 
 
     useEffect(() => {
-        // Lấy query params từ URL hiện tại
-        // Lấy các giá trị từ query param
 
         const fetchHotelDetail = async () => {
 

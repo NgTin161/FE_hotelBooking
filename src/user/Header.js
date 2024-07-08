@@ -21,13 +21,13 @@ const Header = () => {
         if (roles.includes('User')) {
             menuItems.push(
                 <Menu.Item key="profile">
-                    <Link to="user/profile" style={{ textDecoration: 'none' }}>Thông tin tài khoản</Link>
+                    <Link to="/user/profile" style={{ textDecoration: 'none' }}>Thông tin tài khoản</Link>
                 </Menu.Item>,
-                <Menu.Item key="favorites">
-                    <Link to="user/favorites" style={{ textDecoration: 'none' }}>Danh sách yêu thích</Link>
-                </Menu.Item>,
+                // <Menu.Item key="favorites">
+                //     <Link to="/favorites" style={{ textDecoration: 'none' }}>Danh sách yêu thích</Link>
+                // </Menu.Item>,
                 <Menu.Item key="history">
-                    <Link to="user/history" style={{ textDecoration: 'none' }}>Lịch sử</Link>
+                    <Link to="/user/history" style={{ textDecoration: 'none' }}>Lịch sử</Link>
                 </Menu.Item>
             );
         }
@@ -59,14 +59,14 @@ const Header = () => {
 
     let greeting = null;
     if (decodedToken) {
-        const email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+        const fullName = decodedToken['fullName'];
         const roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
         const id = decodedToken['sub'];
 
         greeting = (
             <Dropdown overlay={getMenuForRoles(roles)}>
                 <Button className='button-user'>
-                    Xin chào, {email} <DownOutlined />
+                    Xin chào, {fullName} <DownOutlined />
                 </Button>
             </Dropdown>
         );

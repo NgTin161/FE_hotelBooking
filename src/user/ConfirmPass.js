@@ -3,7 +3,7 @@ import { LockOutlined, EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icon
 import { Input, Form, Button, message } from 'antd';
 
 import { Link, useParams } from 'react-router-dom';
-import { axiosFormData } from '../axios/axiosCustomize';
+import { axiosFormData, axiosJson } from '../axios/axiosCustomize';
 import { toast } from 'react-toastify';
 
 const ConfirmPass = () => {
@@ -46,15 +46,18 @@ const ConfirmPass = () => {
             formData.append('confirmPassword', values.password2);
             console.log('Form values:', formData);
 
-            const response = await axiosFormData.post('/Users/reset-password', formData);
+            const response = await axiosJson.post('/Users/reset-password', formData);
 
             console.log('Response:', response);
 
             if (response.status === 200) {
-                toast.success(`Đổi mật khẩu thành công. Vui lòng đăng nhập lại`);
+                toast.info('Đổi mật khẩu thành công. Vui lòng đăng nhập lại');
                 localStorage.removeItem('jwt');
-                // Redirect to home or dashboard
-                window.location.href = '/';
+
+
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
             } else {
                 toast.error(response.data || 'Đã xảy ra lỗi khi đổi mật khẩu');
             }
@@ -64,12 +67,13 @@ const ConfirmPass = () => {
         }
     };
 
+
     return (
         <>
             <div className='Container-header'>
-                <div className="grid-container" style={{ marginLeft: '55px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Link to="/">
-                        <div className='logo' />
+                        <div style={{ marginTop: -12 }} className='logo' />
                     </Link>
                 </div>
             </div>
