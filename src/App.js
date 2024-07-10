@@ -46,7 +46,7 @@ function App() {
                     <Route path="/filter" element={<HotelFilter />} />
                     <Route path="/detail/:id" element={<Details />}></Route>
                     <Route path="/checkout" element={<CheckOut />}></Route>
-
+                    <Route path="/review" element={<Review />}></Route>
                     <Route path="/registerhotel" element={<HotelRegister />}></Route>
                     <Route path="/confirm-payment" element={<ConfirmPayment />}></Route>
                 </Route>

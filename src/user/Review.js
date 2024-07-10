@@ -103,7 +103,7 @@ const Review = () => {
 
     return (
         <>
-            <Header />
+
             <div className="container" style={{ display: 'flex', justifyContent: 'center', margin: 30 }}>
                 <Card style={{ textAlign: 'center', border: '1px solid #379AE6FF', width: '700px' }}>
                     <Typography.Title style={{ margin: 0, padding: 0 }} level={4}>Phiếu đánh giá khách sạn</Typography.Title>
@@ -157,7 +157,7 @@ const Review = () => {
                     )}
                 </Card>
             </div>
-            <Footer />
+
         </>
     );
 };

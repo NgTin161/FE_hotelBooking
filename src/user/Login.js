@@ -28,12 +28,12 @@ const Login = () => {
                 toast.success('Đăng nhập thành công');
                 // Redirect to home or dashboard
                 window.location.href = '/';
-            } else {
-                message.error('Sai tên đăng nhập hoặc mật khẩu');
+            } else if (response.status === 401) {
+                toast.error('Sai tên đăng nhập hoặc mật khẩu');
             }
         } catch (error) {
             console.error('Error:', error);
-            message.error('Đã xảy ra lỗi khi đăng nhập');
+            toast.error('Đã xảy ra lỗi khi đăng nhập');
         }
     };
 
@@ -57,20 +57,20 @@ const Login = () => {
         }
     };
 
-    const responseFacebook = async (response) => {
-        try {
-            const result = await axios.post('https://localhost:7186/api/Users/facebook-login', {
-                tokenId: response.authResponse.accessToken,
-            });
+    // const responseFacebook = async (response) => {
+    //     try {
+    //         const result = await axios.post('https://localhost:7186/api/Users/facebook-login', {
+    //             tokenId: response.authResponse.accessToken,
+    //         });
 
-            // Lưu token và xử lý đăng nhập thành công
-            localStorage.setItem('token', result.data.token);
-            // Redirect to home or dashboard
-            window.location.href = '/';
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+    //         // Lưu token và xử lý đăng nhập thành công
+    //         localStorage.setItem('token', result.data.token);
+    //         // Redirect to home or dashboard
+    //         window.location.href = '/';
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // };
     return (
         <>
             <div className='Container-header'>

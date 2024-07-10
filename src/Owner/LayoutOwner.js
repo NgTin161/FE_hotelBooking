@@ -28,34 +28,34 @@ function getItem(label, key, icon, children) {
 const items = [
   getItem(
 
-    <Link to="/owner/dashboard" style={{ color: 'black', textDecoration: 'none' }}>
+    <Link to="/owner/dashboard" style={{ color: '#379AE6', textDecoration: 'none' }}>
       Tổng quan
     </Link>,
     "1",
-    <DesktopOutlined />
+    <DesktopOutlined style={{ color: '#379AE6' }} />
   ),
   getItem(
-    <NavLink to="/owner/information" style={{ color: 'black', textDecoration: 'none' }}>
+    <NavLink to="/owner/information" style={{ color: '#379AE6', textDecoration: 'none' }}>
       Thông tin khách sạn
     </NavLink>,
     "2",
-    <UserOutlined />
+    <UserOutlined style={{ color: '#379AE6' }} />
   ),
 
 
   getItem(
-    <Link to="/owner/booking" style={{ color: 'black', textDecoration: 'none' }}>
+    <Link to="/owner/booking" style={{ color: '#379AE6', textDecoration: 'none' }}>
       Danh sách Booking
     </Link>,
     "3",
-    <DesktopOutlined />
+    <DesktopOutlined style={{ color: '#379AE6' }} />
   ),
   getItem(
-    <NavLink to="/owner/roomtype" style={{ color: 'black', textDecoration: 'none' }}>
+    <NavLink to="/owner/roomtype" style={{ color: '#379AE6', textDecoration: 'none' }}>
       Loại phòng
     </NavLink>,
     "4",
-    <NotificationOutlined />
+    <NotificationOutlined style={{ color: '#379AE6' }} />
   ),
 
 ];

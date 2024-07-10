@@ -264,28 +264,28 @@ const HomePage = () => {
                         <div className='col-sm-6 ' style={{ display: 'flex', gap: 1, marginTop: 10 }}>
 
                             <div className='col-sm-3'>
-                                <img class="moving-image" src='../asset/images/1.jpg' style={{ width: 150, height: 300, marginTop: 30, }} />
+                                <img class="moving-image" src='../asset/images/1.jpg' style={{ width: 130, height: 300, marginTop: 30, }} />
 
                             </div>
                             <div className='col-sm-3'>
-                                <img class="moving-imageDif" src='../asset/images/2.jpg' style={{ width: 150, height: 360 }} />
+                                <img class="moving-imageDif" src='../asset/images/2.jpg' style={{ width: 130, height: 360 }} />
                             </div>
                             <div className='col-sm-3'>
-                                <img class="moving-image" src='../asset/images/3.jpg' style={{ width: 150, height: 300, marginTop: 30, }} />
+                                <img class="moving-image" src='../asset/images/3.jpg' style={{ width: 130, height: 300, marginTop: 30, }} />
                             </div>
 
                         </div>
 
                     </div>
                 </div>
-                <div className='TOP3' style={{ marginTop: 40, color: 'black', fontWeight: 'bold' }}>
-                    <h5 style={{ marginLeft: 30, }}>
-                        <Link to='/Details'>ĐANG THỊNH HÀNH <i style={{ color: 'red', marginBottom: 30, }} class="fa-solid fa-fire"></i>
+                <div className='' style={{ marginTop: 40, color: 'black', fontWeight: 'bold' }}>
+                    <h5 style={{ marginLeft: 30 }}>
+                        <Link style={{ textDecoration: 'none' }} to='/Details'>ĐANG THỊNH HÀNH <i style={{ color: 'red', marginBottom: 30, }} class="fa-solid fa-fire"></i>
                         </Link>
-                        <Link to='/Details' style={{ float: 'right' }}>xem thêm <i class="fa-solid fa-arrow-right"></i>
+                        <Link to='/Details' style={{ float: 'right', textDecoration: 'none', marginRight: 30 }}>Xem thêm <i class="fa-solid fa-arrow-right"></i>
                         </Link>
                     </h5>
-                    <div class="containerTrend">
+                    <div class="containerTrend" >
                         <div class="card" >
                             <img class="card-img-top" src='../asset/images/ks1.jpg' alt="Card image" />
                             <div class="card-body" style={{ lineHeight: 2, }}>
@@ -394,11 +394,11 @@ const HomePage = () => {
                     </div>
                 </div>
 
-                <div className='TOP3' style={{ top: 0, color: 'black', fontWeight: 'bold', marginBottom: 40, }}>
-                    <h5 style={{ marginLeft: 30, }}><Link to='/Details'>ĐÃ QUAN TÂM GẦN ĐÂY</Link>
-                        <Link to='/Details' style={{ float: 'right' }}>xem thêm <i class="fa-solid fa-arrow-right"></i>
-                        </Link>
-                    </h5>
+                <div className='' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', marginBottom: 40, marginTop: 100, marginLeft: 30, marginRight: 0 }}>
+
+                    <h5>  <Link to='/Details' style={{ textDecoration: 'none' }}>ĐÃ QUAN TÂM GẦN ĐÂY</Link></h5>
+                    <h5>  <Link to='/Details' style={{ textDecoration: 'none', marginRight: 30 }}>Xem thêm <i class="fa-solid fa-arrow-right"></i></Link></h5>
+
                 </div>
                 <div className='room'>
                     <div class="card" >
@@ -507,8 +507,8 @@ const HomePage = () => {
                 </div>
 
 
-                <div className='blogs-back'>
-                    <h3 style={{ marginLeft: 30, marginTop: 10, color: 'gray', fontWeight: 'bold', marginBottom: 40, fontSize: 50, }}>Blogs</h3>
+                <div className='blogs-back' >
+                    <h3 style={{ marginLeft: 30, marginTop: 30, color: 'gray', fontWeight: 'bold', marginBottom: 40, fontSize: 50, }}>Blogs</h3>
                     <div className='container-blogs'>
                         <div class="itemBlogs " >
                             <div style={{ display: 'grid', marginTop: 25, }}>
@@ -525,16 +525,16 @@ const HomePage = () => {
                                 <img className='pic-blogs' src='../asset/images/tcv.jpg' alt="Card image" style={{ width: 300, height: 150, }} />
                             </div>
                             <div style={{ display: 'grid', marginTop: 30, }}>
-                                <a style={{ color: 'black', fontWeight: 'bold' }}>thành phố Hồ Chí Minh có gì vui ?</a>
+                                <a style={{ color: 'black', fontWeight: 'bold' }}>Thành phố Hồ Chí Minh có gì vui ?</a>
                                 <button class="styled-button-xemngay">Xem Ngay</button>
                             </div>
                         </div>
                         <div class="itemBlogs ">
                             <div style={{ display: 'grid', marginTop: 25, }}>
-                                <img className='pic-blogs' src='../asset/images/coffee.jpg' alt="Card image" style={{ width: 300, height: 150, }} />
+                                <img className='pic-blogs' src='../asset/images/ngon.jpg' alt="Card image" style={{ width: 300, height: 150, }} />
                             </div>
                             <div style={{ display: 'grid', marginTop: 30, }}>
-                                <a style={{ color: 'black', fontWeight: 'bold' }}>CheckIn coffee chill cùng các món thức uống mới ?</a>
+                                <a style={{ color: 'black', fontWeight: 'bold' }}>Checkin coffee chill cùng các món thức uống mới ?</a>
                                 <button class="styled-button-xemngay">Xem Ngay</button>
                             </div>
                         </div>

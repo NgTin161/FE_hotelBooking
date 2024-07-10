@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { Card, Row, Col, Avatar, Space, Typography, Image, Divider, Input, Button, Radio, Form, Rate, Table } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined, NotificationOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { FaLocationDot, FaMapLocationDot } from 'react-icons/fa6';
+
 import { MdOutlineEmail } from 'react-icons/md';
 import { FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa';
-import TextArea from 'antd/es/input/TextArea';
+
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { axiosJson } from '../axios/axiosCustomize';

@@ -1,7 +1,9 @@
 /* 
 .ant-card .ant-card-body {
     padding: 0 !important; } */
-
+a {
+    text-decoration: none;
+}
 .custom-select .ant-select-selector {
     border-radius: 18px !important; /* Thay đổi border-radius tùy ý */
     border-color: #379AE6FF !important; /* Thay đổi màu viền tùy ý */

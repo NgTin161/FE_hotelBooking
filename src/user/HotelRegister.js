@@ -329,6 +329,7 @@ const HotelRegister = () => {
                 // defaultFileList={formValues.images}
                 beforeUpload={() => false}
                 onChange={handleChange}
+                accept="image/*"
               >
                 <Button>Chọn ảnh</Button>
               </Upload>

@@ -126,7 +126,7 @@ const HotelFilter = () => {
     };
 
 
-    const [priceRange, setPriceRange] = useState([100000, 2000000]);
+    const [priceRange, setPriceRange] = useState([100000, 3000000]);
     const [sortOrder, setSortOrder] = useState('asc');
 
     const [filters, setFilters] = useState({
@@ -371,9 +371,9 @@ const HotelFilter = () => {
                                 range
                                 value={priceRange}
                                 onChange={handlePriceChange}
-                                defaultValue={[100000, 2000000]}
+                                defaultValue={[100000, 3000000]}
                                 min={100000}
-                                max={2000000}
+                                max={3000000}
                             />
 
                             <Typography variant="body" color="textSecondary">Từ: {priceRange[0].toLocaleString()} VND - Đến: {priceRange[1].toLocaleString()} VND</Typography>
@@ -408,8 +408,8 @@ const HotelFilter = () => {
                 <div className="container" style={{ width: '70%' }}>
                     <Typography.Title level={3}>
                         Có {filteredHotels.length} khách sạn từ ngày{' '}
-                        {checkinDate ? moment(checkinDate).format('DD-MM-YY') : 'không có ngày'} đến{' '}
-                        {checkoutDate ? moment(checkoutDate).format('DD-MM-YY') : 'không có ngày'}
+                        {checkinDate ? moment(checkinDate).format('DD-MM-YYYY') : 'không có ngày'} đến{' '}
+                        {checkoutDate ? moment(checkoutDate).format('DD-MM-YYYY') : 'không có ngày'}
                     </Typography.Title>
                     <InfiniteScroll
                         dataLength={items.length}
