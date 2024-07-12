@@ -34,6 +34,12 @@ const RoomTypesTable = ({ roomTypes, hotelDetail, checkinDate, checkoutDate, adu
       ),
     },
     {
+      title: 'Số giường',
+      dataIndex: 'numberOfBed',
+
+
+    },
+    {
       title: 'Dịch vụ',
       render: (_, record) => {
         const services = [

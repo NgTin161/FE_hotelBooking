@@ -19,38 +19,19 @@ const { Title, Text } = Typography;
 const CheckOut = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
+
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [note, setNote] = useState('');
-    // useEffect(() => {
-    //     const token = localStorage.getItem('jwt');
-    //     if (token) {
-    //         try {
-    //             const decodedToken = jwtDecode(token);
-    //             const email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
-    //             setEmail(email)
 
-    //             const fullName = decodedToken['fullName'];
-    //             setFullName(fullName)
-    //             const phoneNumber = decodedToken['phoneNumber'];
-    //             setPhoneNumber(phoneNumber)
-    //             console.log(email, fullName, phoneNumber)
-    //         } catch (error) {
-    //             console.error('Invalid token format:', error);
-
-    //         }
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     if (user) {
-    //         setFullName(user.fullName || '');
-    //         setEmail(user.email || '');
-    //         setPhoneNumber(user.phoneNumber || '');
-    //     }
-    // }, [user]);
-
+    useEffect(() => {
+        if (user) {
+            setFullName(user.fullName || '');
+            setEmail(user.email || '');
+            setPhoneNumber(user.phoneNumber || '');
+        }
+    }, [user]);
 
 
     const [form] = Form.useForm();
@@ -106,8 +87,8 @@ const CheckOut = () => {
     //         const values = form.getFieldsValue();
     //         const { customerName, email, phoneNumber, note } = values;
 
-    //         // Loại bỏ thuộc tính `name` từ `bookingDetails`
-    // //         const modifiedBookingDetails = bookingData.bookingDetails.map(({ name, ...rest }) => rest);
+
+    //         const modifiedBookingDetails = bookingData.bookingDetails.map(({ name, ...rest }) => rest);
 
     //         const payload = {
     //             ...bookingData,
@@ -117,20 +98,20 @@ const CheckOut = () => {
     //             note,
     //             bookingDetails: modifiedBookingDetails,
     //         };
-
+    //         console.log(payload)
     //         let response;
-    //         if (paymentMethod === 'MOMO') {
-    //             response = await axiosJson.post('/Payment/momo-payment', payload);
-    //         } else if (paymentMethod === 'VNPAY') {
-    //             response = await axiosJson.post('/Payment/vnpay-payment', payload);
-    //         }
+    //         // if (paymentMethod === 'MOMO') {
+    //         //     response = await axiosJson.post('/Payment/momo-payment', payload);
+    //         // } else if (paymentMethod === 'VNPAY') {
+    //         //     response = await axiosJson.post('/Payment/vnpay-payment', payload);
+    //         // }
 
-    //         if (response.status === 200) {
-    //             // toast.success('Payment successful');
-    //             window.open(response.data.url, '_blank');
-    //         } else {
-    //             toast.error('Payment failed');
-    //         }
+    //         // if (response.status === 200) {
+    //         //     // toast.success('Payment successful');
+    //         //     window.open(response.data.url, '_blank');
+    //         // } else {
+    //         //     toast.error('Payment failed');
+    //         // }
     //     } catch (error) {
     //         console.error('Payment error:', error);
     //         toast.error('An error occurred during payment');
@@ -169,9 +150,9 @@ const CheckOut = () => {
                 phoneNumber: phoneNumber,
                 note: note,
                 bookingDetails: modifiedBookingDetails,
-                // other fields as needed
-            };
 
+            };
+            console.log(payload);
             let response;
             if (paymentMethod === 'MOMO') {
                 response = await axiosJson.post('/Payment/momo-payment', payload);
@@ -297,54 +278,55 @@ const CheckOut = () => {
             <Card className='card-checkout' style={{}}>
 
                 <Typography.Title level={5} style={{ marginBottom: '16px' }}>Thông tin thanh toán</Typography.Title>
-                <Input
-                    size="large"
-                    value={user?.fullName}
-                    onChange={(e) => handleInputChange(e, 'fullName')}
-                    placeholder="Thông tin khách hàng"
-                    prefix={<UserOutlined />}
-                    style={{ marginBottom: '5px' }}
-                />
-                <Input
-                    size="large"
-                    value={user?.email}
-                    onChange={(e) => handleInputChange(e, 'email')}
-                    placeholder="Email"
-                    prefix={<MailOutlined />}
-                    style={{ marginBottom: '5px' }}
-                />
-                <Input
-                    size="large"
-                    value={user?.phoneNumber}
+                <Form
+                    form={form}
+                    layout="vertical"
+                >
+                    <Form.Item label="Họ tên">
+                        <Input
+                            prefix={<UserOutlined />}
+                            value={fullName}
+                            onChange={(e) => handleInputChange(e, 'fullName')}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Email">
+                        <Input
+                            prefix={<MailOutlined />}
+                            value={email}
+                            onChange={(e) => handleInputChange(e, 'email')}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Số điện thoại">
+                        <Input
+                            prefix={<PhoneOutlined />}
+                            value={phoneNumber}
+                            onChange={(e) => handleInputChange(e, 'phoneNumber')}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Ghi chú">
+                        <Input.TextArea
 
-                    onChange={(e) => handleInputChange(e, 'phoneNumber')}
-                    placeholder="Số điện thoại"
-                    prefix={<PhoneOutlined />}
-                    style={{ marginBottom: '5px' }}
-                />
-                <Input.TextArea
-                    showCount
-                    maxLength={100}
-                    onChange={(e) => handleInputChange(e, 'note')}
-                    placeholder="Ghi chú"
-                    style={{
-                        height: 120,
-                        resize: 'none',
-                        marginBottom: '10px',
-                    }}
-                />
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px', gap: '30px' }}>
-                    <img src="/asset/images/momo.png" alt="Momo" style={{ width: '30%' }} />
-                    <img src="/asset/images/vnpay.png" alt="VNPAY" style={{ width: '30%' }} />
-                </div>
-                <Radio.Group onChange={handleRadioChange} value={paymentMethod} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
-                    <Radio.Button value="MOMO" style={{ flex: 1 }}>
-                        MOMO
-                    </Radio.Button>
-                    <Radio.Button value="VNPAY" style={{ flex: 1, marginLeft: '10px' }}>
-                        VNPAY
-                    </Radio.Button>
-                </Radio.Group>
+                            prefix={<NotificationOutlined />}
+                            value={note}
+                            onChange={(e) => handleInputChange(e, 'note')}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Phương thức thanh toán">
+                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px', gap: '30px' }}>
+                            <img src="/asset/images/momo.png" alt="Momo" style={{ width: '30%' }} />
+                            <img src="/asset/images/vnpay.png" alt="VNPAY" style={{ width: '30%' }} />
+                        </div>
+
+                        <Radio.Group onChange={handleRadioChange} value={paymentMethod} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
+                            <Radio.Button value="MOMO" style={{ flex: 1 }}>
+                                MOMO
+                            </Radio.Button>
+                            <Radio.Button value="VNPAY" style={{ flex: 1, marginLeft: '10px' }}>
+                                VNPAY
+                            </Radio.Button>
+                        </Radio.Group>
+                    </Form.Item>
+                </Form>
                 <Button type="primary" block size="large" disabled={!paymentMethod} onClick={handleSubmit}>
                     Thanh toán
                 </Button>

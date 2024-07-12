@@ -77,6 +77,7 @@ const Profile = () => {
         toast.error('Có lỗi khi thay đổi mật khẩu');
       }
     } catch (error) {
+      toast.error('Đã có lỗi xảy ra. Vui lòng thử lại sau')
       console.error('Error changing password:', error);
     }
   };

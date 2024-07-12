@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form, Input, Select, Row, Col, TimePicker, Button, Upload, Modal, Descriptions, Switch, Card, Image, Typography, Rate, Checkbox } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Editor } from '@tinymce/tinymce-react';
@@ -9,41 +9,45 @@ import { AuthContext } from '../../../axios/AuthContext';
 import { useContext } from 'react';
 import dayjs from 'dayjs';
 import SpinComponents from '../../../Components/Spin';
+import ReactQuill from 'react-quill';
+import '../../../../node_modules/react-quill/dist/quill.snow.css';
+import { toast } from 'react-toastify';
+
 const { Option } = Select;
 
-// const mockData = {
-//   hotelName: "The IMPERIAL Vung Tau Hotel",
-//   email: "tinnguyentrung2002@gmail.com",
-//   phoneNumber: "0902427957",
-//   ratingStarts: 5,
-//   province: "Tỉnh Bà Rịa - Vũng Tàu",
-//   address: "159 Thùy Vân, Phường Thắng Tam, Thành phố Vũng Tàu",
-//   location: {
-//     latitude: 10.34327498700003,
-//     longitude: 107.09471604300006
-//   },
-//   checkinTime: "11:00:00",
-//   checkoutTime: "14:00:00",
-//   description: "<h4>The IMPERIAL Vũng Tàu Hotel</h4>\r\n<p>Khách sạn sang trọng tại Vũng Tàu với kiến trúc cổ điển và tiện nghi hiện đại.</p>\r\n\r\n<h5>Chỗ ở</h5>\r\n<ul>\r\n    <li>Deluxe: Giường king-size, ban công riêng.</li>\r\n    <li>Executive: Phòng khách riêng, Executive Lounge.</li>\r\n    <li>Tổng thống: Bar riêng, dịch vụ cá nhân.</li>\r\n</ul>\r\n\r\n<h5>Ăn uống</h5>\r\n<ul>\r\n    <li>Dining Room: Đồ ăn quốc tế và Việt Nam.</li>\r\n    <li>Hải sản: Hải sản tươi sống.</li>\r\n    <li>Lobby Lounge: Trà, cocktail, nhạc sống.</li>\r\n</ul>\r\n\r\n<h5>Tiện nghi</h5>\r\n<ul>\r\n    <li>Spa: Liệu pháp làm đẹp.</li>\r\n    <li>Gym: Thiết bị hiện đại.</li>\r\n    <li>Bể bơi: Bể vô cực, quầy bar.</li>\r\n    <li>Kinh doanh: Phòng họp, internet tốc độ cao.</li>\r\n</ul>\r\n\r\n<h5>Liên hệ</h5>\r\n<p>\r\n    159 Thùy Vân, Thắng Tam, Vũng Tàu, Bà Rịa - Vũng Tàu<br>\r\n    +84 254 362 8888<br>\r\n    reservations@imperialhotel.vn<br>\r\n    <a href=\"http://www.imperialhotel.vn\" target=\"_blank\">imperialhotel.vn</a>\r\n</p>",
-//   acceptChildren: true,
-//   acceptPet: false,
-//   supportPeopleWithDisabilities: true,
-//   haveElevator: true,
-//   haveSwimmingPool: true,
-//   imageUrls: [
-//     "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/8692acce-3762-45ae-bcf5-e839aaf4d093.jpg",
-//     "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/20653917-d669-4149-87f1-cf43f65b5ef5.jpg",
-//     "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/5f6af434-5261-4e1f-b750-ff5788b1e65a.jpg",
-//     "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/235125b6-d70f-47a7-a0c1-0cc07f8d70fe.jpg",
-//     "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/9a68950e-7efc-46cc-bea3-5dba452de490.jpg"
-//   ],
-//   isActive: true
-// };
+const mockData = {
+  hotelName: "The IMPERIAL Vung Tau Hotel",
+  email: "tinnguyentrung2002@gmail.com",
+  phoneNumber: "0902427957",
+  ratingStarts: 5,
+  province: "Tỉnh Bà Rịa - Vũng Tàu",
+  address: "159 Thùy Vân, Phường Thắng Tam, Thành phố Vũng Tàu",
+  location: {
+    latitude: 10.34327498700003,
+    longitude: 107.09471604300006
+  },
+  checkinTime: "11:00:00",
+  checkoutTime: "14:00:00",
+  description: "<pn>Khách sạn sang n<ulhách rng, dịch vụ    <li>Dining Room: Đồ ăn quốc tế và Việt Nam.</li>\r\n    <li>Hải sản: Hải sản tươi sống.</li>\r\n    <li>Lobby Lounge: Trà, cocktail, nhạc sống.</li>\r\n</ul>\r\n\r\n<h5>Tiện nghi</h5>\r\n<ul>\r\n    <li>Spa: Liệu pháp làm đẹp.</li>\r\n    <li>Gym: Thiết bị hiện đại.</li>\r\n    <li>Bể bơi: Bể vô cực, quầy bar.</li>\r\n    <li>Kinh doanh: Phòng họp, internet tốc độ cao.</li>\r\n</ul>\r\n\r\n<h5>Liên hệ</h5>\r\n<p>\r\n    159 Thùy Vân, Thắng Tam, Vũng Tàu, Bà Rịa - Vũng Tàu<br>\r\n    +84 254 362 8888<br>\r\n    reservations@imperialhotel.vn<br>\r\n    <a href=\"http://www.imperialhotel.vn\" target=\"_blank\">imperialhotel.vn</a>\r\n</p>",
+  acceptChildren: true,
+  acceptPet: false,
+  supportPeopleWithDisabilities: true,
+  haveElevator: true,
+  haveSwimmingPool: true,
+  imageUrls: [
+    "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/8692acce-3762-45ae-bcf5-e839aaf4d093.jpg",
+    "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/20653917-d669-4149-87f1-cf43f65b5ef5.jpg",
+    "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/5f6af434-5261-4e1f-b750-ff5788b1e65a.jpg",
+    "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/235125b6-d70f-47a7-a0c1-0cc07f8d70fe.jpg",
+    "https://localhost:7186/Images/71d05988-0136-4468-bfd5-4956e4ccbb04/9a68950e-7efc-46cc-bea3-5dba452de490.jpg"
+  ],
+  isActive: true
+};
 
 const Information = () => {
   const { user } = useContext(AuthContext);
 
-  console.log('userINfor', user);
+  const reactQuillRef = useRef < ReactQuill > (null);
   const [form] = Form.useForm();
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -86,6 +90,8 @@ const Information = () => {
           status: 'done',
           url: url
         })));
+
+
       } else {
         console.log('Có lỗi xảy ra khi lấy thông tin khách sạn');
       }
@@ -136,35 +142,39 @@ const Information = () => {
   };
 
   const handleFinish = (values) => {
+
+    const CheckinTime = dayjs(values.checkinTime).format('HH:mm');
+    const CheckoutTime = dayjs(values.CheckoutTime).format('HH:mm');
     setFormValues({
       ...values,
-      // checkInTime: values.checkInTime.format('HH:mm'),
-      // checkOutTime: values.checkOutTime.format('HH:mm'),
       description: values.description,
       images: values.upload.fileList
     });
-    setIsModalVisible(false);
+    console.log(values)
+    // setIsModalVisible(false);
   };
 
-  useEffect(() => {
-    const address = `${selectedProvince}, ${selectedDistrict}, ${selectedWard}, ${street}`;
-    setFullAddress(address);
-  }, [selectedProvince, selectedDistrict, selectedWard, street]);
 
+  useEffect(() => {
+    const address = `${street}, ${selectedWard}, ${selectedDistrict}, ${selectedProvince}`;
+    setFullAddress(address);
+    form.setFieldsValue({ address: address });
+  }, [selectedProvince, selectedDistrict, selectedWard, street]);
 
   if (!hotel || !formValues) {
     return <SpinComponents />;
   };
 
   const handleOpenModal = () => {
+
     setIsModalVisible(true);
     form.setFieldsValue({
       hotelName: hotel?.hotelName,
       stars: hotel?.ratingStarts,
       fullAddress: hotel?.address,
       province: hotel?.province,
-      checkInTime: dayjs(hotel?.checkinTime, 'HH:mm'),
-      checkOutTime: dayjs(hotel?.checkoutTime, 'HH:mm'),
+      checkinTime: dayjs(hotel?.checkinTime, 'HH:mm'),
+      checkoutTime: dayjs(hotel?.checkoutTime, 'HH:mm'),
       acceptChildren: hotel?.acceptChildren,
       acceptPet: hotel?.acceptPet,
       supportPeopleWithDisabilities: hotel?.supportPeopleWithDisabilities,
@@ -175,15 +185,42 @@ const Information = () => {
     });
   };
 
+
+
   const handleUploadChange = ({ fileList }) => setFileList(fileList);
 
   const handleRemove = (file) => {
     setFileList(fileList.filter((item) => item.uid !== file.uid));
   };
+
+  const handleStatusChange = async () => {
+    try {
+      if (!user || !user.id) {
+        console.log('User or user.id is not available');
+        return;
+      }
+
+      console.log('Attempting to toggle hotel status for userId:', user.id);
+
+      const response = await axiosJson.post(`/Owner/hotel-status?userId=${user.id}`);
+      // Assuming userId should be part of URL path based on RESTful conventions
+
+      if (response.status === 200) {
+        toast.success("Cập nhật thành công");
+        // Optionally update local state after successful update
+        fetchHotel(user.id); // Ensure fetchHotel updates the hotel data after toggle
+      } else {
+        toast.error("Có lỗi xảy ra khi cập nhật trạng thái khách sạn");
+      }
+    } catch (error) {
+      console.error("Lỗi khi cập nhật trạng thái khách sạn:", error);
+      toast.error("Có lỗi xảy ra");
+    }
+  };
   return (
     <>
       <div>
-        <p>Hoạt động: <Switch checked={hotel?.isActive} /></p>
+        Hoạt động: <Switch checked={hotel?.isActive} onChange={handleStatusChange} />
 
         <Typography.Title level={5}>Thông tin khách sạn</Typography.Title>
 
@@ -290,7 +327,7 @@ const Information = () => {
               </Col>
             </Row>
 
-            <Form.Item label="Địa chỉ cụ thể" name="specificAddress">
+            <Form.Item label="Địa chỉ mới" name="address">
               <Input value={fullAddress} readOnly />
             </Form.Item>
 
@@ -298,7 +335,7 @@ const Information = () => {
               <Col span={12}>
                 <Form.Item
                   label="Giờ nhận phòng"
-                  name="checkInTime"
+                  name="checkinTime"
                   rules={[{ required: true, message: 'Vui lòng chọn giờ nhận phòng!' }]}
                 >
                   <TimePicker format="HH:mm" />
@@ -307,7 +344,7 @@ const Information = () => {
               <Col span={12}>
                 <Form.Item
                   label="Giờ trả phòng"
-                  name="checkOutTime"
+                  name="checkoutTime"
                   rules={[{ required: true, message: 'Vui lòng chọn giờ trả phòng!' }]}
                 >
                   <TimePicker format="HH:mm" />
@@ -334,13 +371,26 @@ const Information = () => {
                 <Checkbox>Có bể bơi</Checkbox>
               </Form.Item>
             </Row>
-            <Form.Item label="Mô tả khách sạn" name="description">
-              <Editor
-                apiKey="0a6bh6skphg9vhlesue4sqiejdqnhp4paz9j1pj0c7js3u5b"
-                init={{
-                  plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-                  toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+
+            <Form.Item
+              label="Miêu tả"
+              name="description"
+              rules={[{ required: true, message: 'Vui lòng nhập miêu tả!' }]}
+            >
+              <ReactQuill
+                ref={reactQuillRef}
+                modules={{
+                  toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                    [{ size: [] }],
+                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' },
+                    { 'indent': '-1' }, { 'indent': '+1' }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                  ],
                 }}
+
               />
             </Form.Item>
 
@@ -353,6 +403,7 @@ const Information = () => {
                 beforeUpload={() => false}
                 onChange={handleUploadChange}
                 onRemove={handleRemove}
+
               >
                 <Button icon={<UploadOutlined />}>Chọn file</Button>
               </Upload>

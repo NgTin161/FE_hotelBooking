@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { Button, Card, Checkbox, Dropdown, Flex, Input, InputNumber, Menu, Rate, Select, message } from 'antd';
 import { DatePicker, Space } from 'antd';
@@ -8,7 +7,6 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { axiosJson } from '../axios/axiosCustomize';
 import SlidesDetails from '../Components/SlidesDetails';
 import MapDetail from '../Components/MapDetail';
-
 import { MdOutlineEmail } from "react-icons/md";
 import { FaRegClock, FaPhoneAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -18,7 +16,7 @@ import SlidesReview from '../Components/SlidesReview';
 import RoomTypesTable from '../Components/RoomTypesTable';
 import moment from 'moment';
 import { toast } from 'react-toastify';
-import { Option } from 'antd/es/mentions';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
@@ -61,7 +59,7 @@ const Details = () => {
         const fetchNewRoom = async () => {
             try {
 
-                const response = await axiosJson.get(`/RoomTypes/getavailableroom?hotelId=${hotelId}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&numberOfAdults=${adults}&numberOfChildren=${numberOfChildren}&numberOfRooms=${rooms}`);
+                const response = await axiosJson.get(`/RoomTypes/getavailableroom?hotelId=${hotelId}&checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&numberOfPeople=${adults}&numberOfChildren=${numberOfChildren}&numberOfRooms=${rooms}`);
 
                 console.log(hotelId, checkinDate, checkoutDate, adults, numberOfChildren, rooms);
                 console.log('new room', response.data);
@@ -69,7 +67,7 @@ const Details = () => {
                 toast.success('Cập nhật thành công');
 
             } catch (error) {
-                console.log('lỗi', error)
+                console.log('Lỗi', error)
                 toast.error('Cập nhật thất bại');
             }
         };
@@ -95,7 +93,7 @@ const Details = () => {
         fetchHotelDetail();
     }, []);
 
-    const [roomTypes, setRoomTypes] = useState();
+    const [roomTypes, setRoomTypes] = useState([]);
     const location = useLocation();
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
@@ -119,7 +117,7 @@ const Details = () => {
                             hotelId: hotelId,
                             checkinDate: checkIn,
                             checkoutDate: checkOut,
-                            numberOfAdults: numberOfAdults,
+                            numberOfPeople: numberOfAdults,
                             numberOfChildren: numberOfChildren,
                             numberOfRooms: numberOfRooms
                         }
@@ -159,7 +157,54 @@ const Details = () => {
         setShowDropdown(false);
     };
 
+    useEffect(() => {
+        const connection = new HubConnectionBuilder()
+            .withUrl("https://localhost:7186/availabilityHub")
+            .build();
 
+        connection.on("ReceiveAvailableRoomsUpdate", (roomId, availableRooms, checkInDate, checkOutDate) => {
+            console.log('Received available rooms update', roomId, availableRooms, checkInDate, checkOutDate);
+
+            const currentCheckInDate = dayjs(checkinDate, urlDateFormat);
+            const currentCheckOutDate = dayjs(checkoutDate, urlDateFormat);
+            const incomingCheckInDate = dayjs(checkInDate);
+            const incomingCheckOutDate = dayjs(checkOutDate);
+
+            const isDateRangeOverlapping = (start1, end1, start2, end2) => {
+                return start1.isBefore(end2) && end1.isAfter(start2);
+            };
+
+            const isMatchingDates = isDateRangeOverlapping(currentCheckInDate, currentCheckOutDate, incomingCheckInDate, incomingCheckOutDate);
+
+            if (isMatchingDates) {
+                setRoomTypes(prevState => {
+                    console.log('prevState before update:', prevState);
+
+                    if (!prevState || !Array.isArray(prevState.roomTypes)) {
+                        console.error('prevState.roomTypes is not an array:', prevState.roomTypes);
+                        return prevState;
+                    }
+
+                    const updatedRoomTypes = prevState.roomTypes.map(roomType => {
+                        if (roomType.id === roomId) {
+                            return { ...roomType, availableRooms: availableRooms };
+                        }
+                        return roomType;
+                    });
+
+                    return { ...prevState, roomTypes: updatedRoomTypes };
+                });
+            }
+        });
+
+        connection.start()
+            .then(() => console.log('Connected to SignalR'))
+            .catch(error => console.error('SignalR connection failed: ', error));
+
+        return () => {
+            connection.stop();
+        };
+    }, [checkinDate, checkoutDate]);
     return (
         <>
             {hotelDetail ? (
