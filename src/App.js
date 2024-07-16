@@ -29,6 +29,9 @@ import CheckOut from './user/CheckOut';
 import HistoryUser from './user/HistoryUser';
 
 import Profile from './user/Profile';
+import User from './Admin/Pages/User';
+import LayoutAdmin from './Admin/LayoutAdmin';
+import DashBoardAdmin from './Admin/Pages/DashBoardAdmin';
 
 
 
@@ -55,17 +58,19 @@ function App() {
                 <Route path="/user" element={<PrivateRoute><Layout /></PrivateRoute>}>
                     <Route path="history" element={<HistoryUser />} />
                     <Route path="profile" element={<Profile />}></Route>
-
-
                 </Route>
 
                 <Route path="/owner" element={<PrivateRoute><LayoutOwner /></PrivateRoute>} >
-                    <Route index path="information" element={<Information />} />
-                    <Route path="dashboard" element={<DashBoard />} />
+                    <Route path="information" element={<Information />} />
+                    <Route index path="dashboard" element={<DashBoard />} />
                     <Route path="booking" element={<BookingTable />} />
                     <Route path="roomtype" element={<RoomType />} />
                 </Route>
 
+                <Route path="/admin" element={<PrivateRoute><LayoutAdmin /></PrivateRoute>}>
+                    <Route index path="dashboard" element={< DashBoardAdmin />} />
+                    <Route path="user" element={<User />}></Route>
+                </Route>
 
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/register" element={<Register />}></Route>

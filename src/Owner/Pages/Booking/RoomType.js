@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Table, Switch, Button, Modal, Form, Input, InputNumber, Checkbox, Upload, Row, Col, Typography, Image } from 'antd';
-import { EditOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { AuthContext } from '../../../axios/AuthContext';
 import { axiosFormData, axiosJson } from '../../../axios/axiosCustomize';
 import { IoMdPerson } from 'react-icons/io';
@@ -11,6 +11,7 @@ const RoomType = () => {
   const [roomTypes, setRoomTypes] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [fileList, setFileList] = useState([]);
   const [editRoomType] = Form.useForm();
@@ -56,7 +57,10 @@ const RoomType = () => {
     setShowAddModal(true);
   };
 
-
+  const showDeleteModelHandler = (room) => {
+    setCurrentRoom(room);
+    setShowDeleteModal(true);
+  }
   const handleAddModalOk = () => {
     addRoomType
       .validateFields()
@@ -83,11 +87,32 @@ const RoomType = () => {
         console.log('Validation failed:', errorInfo);
       });
   };
+  const handleDeleteModalOk = async () => {
+    try {
+      if (!user || !user.id) {
+        console.log('User or user.id is not available');
+        return;
+      }
+      const response = await axiosJson.post(`/Owner/room-type-delete?Id=${currentRoom.id}`);
 
+      setShowDeleteModal(false);
+      if (response.status === 200) {
+        setShowEditModal(false);
+        toast.success("Xóa thành công");
+        fetchRoomTypes(user.id);
+      } else {
+        toast.error("Có lỗi xảy ra khi cập nhật trạng thái khách sạn");
+      }
+    } catch (error) {
+      console.error("Lỗi khi cập nhật trạng thái khách sạn:", error);
+      toast.error("Có lỗi xảy ra");
+    }
+  }
 
   const handleCancel = () => {
     setShowAddModal(false);
     setShowEditModal(false);
+    setShowDeleteModal(false);
     setCurrentRoom(null);
     setFileList([])
     editRoomType.resetFields();
@@ -101,12 +126,11 @@ const RoomType = () => {
         return;
       }
       const response = await axiosJson.post(`/Owner/room-type-status?Id=${record.id}`);
-      // Assuming userId should be part of URL path based on RESTful conventions
+
 
       if (response.status === 200) {
         toast.success("Cập nhật thành công");
-        // Optionally update local state after successful update
-        fetchRoomTypes(user.id); // Ensure fetchHotel updates the hotel data after toggle
+        fetchRoomTypes(user.id);
       } else {
         toast.error("Có lỗi xảy ra khi cập nhật trạng thái khách sạn");
       }
@@ -120,10 +144,7 @@ const RoomType = () => {
   const handleUploadChange = ({ fileList }) => setFileList(fileList);
 
   const updateRoomTypeAPI = async (roomTypeId, values) => {
-    // console.log(values);
     const formData = new FormData();
-    // console.log('roomtypeId', roomTypeId);
-
     Object.keys(values).forEach(key => {
       if (typeof values[key] === 'boolean') {
         formData.append(key, values[key]);
@@ -220,12 +241,14 @@ const RoomType = () => {
       title: 'Tên phòng',
       dataIndex: 'name',
       key: 'name',
+      align: 'center',
     },
     {
       title: 'Giá mặc định',
       dataIndex: 'price',
       key: 'price',
       render: (price) => price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }),
+      align: 'center',
     },
     {
       title: 'Số người',
@@ -237,9 +260,11 @@ const RoomType = () => {
           ))}
         </div>
       ),
+      align: 'center',
     },
     {
       title: 'Dịch vụ',
+      align: 'center',
       render: (_, record) => {
         const services = [
           record.haveFreeDrinkWater && 'Miễn phí nước suối',
@@ -269,6 +294,7 @@ const RoomType = () => {
       title: 'Tổng số phòng',
       dataIndex: 'totalRoom',
       key: 'totalRoom',
+      align: 'center',
     },
     {
       title: 'Trạng thái hoạt động',
@@ -286,9 +312,10 @@ const RoomType = () => {
       title: 'Hành động',
       key: 'actions',
       render: (text, record) => (
-        <span>
+        <div style={{ display: 'flex', gap: 5 }}>
           <Button type="link" icon={<EditOutlined />} onClick={() => showEditModalHandler(record)} />
-        </span>
+          <Button type="link" icon={<DeleteOutlined />} onClick={() => showDeleteModelHandler(record)} />
+        </div>
       ),
       align: 'center',
     },
@@ -358,7 +385,9 @@ const RoomType = () => {
                 <InputNumber min={0} />
               </Form.Item>
             </Col>
+
           </Row>
+          <span style={{ color: 'red  ' }}>Lưu ý: Hệ thống sẽ phụ thu 15% trên tổng hóa đơn</span>
           <Form.Item label="Số giường" name="numberOfBed" rules={[{ required: true, message: 'Vui lòng nhập số giường!' }]}>
             <InputNumber min={1} />
           </Form.Item>
@@ -425,6 +454,7 @@ const RoomType = () => {
               </Form.Item>
             </Col>
           </Row>
+          <span style={{ color: 'red  ' }}>Lưu ý: Hệ thống sẽ phụ thu 15% trên tổng hóa đơn</span>
           <Form.Item label="Số giường" name="numberOfBed" rules={[{ required: true, message: 'Vui lòng nhập số giường!' }]}>
             <InputNumber min={1} />
           </Form.Item>
@@ -454,6 +484,16 @@ const RoomType = () => {
             </Upload>
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title="Xác nhận xóa phòng"
+        visible={showDeleteModal}
+        onOk={handleDeleteModalOk}
+        onCancel={handleCancel}
+        okText="Xác nhận"
+        cancelText="Hủy bỏ"
+      >
+        <span>Bạn xác nhận muốn xóa loại phòng {currentRoom?.name} ?</span>
       </Modal>
     </>
   );

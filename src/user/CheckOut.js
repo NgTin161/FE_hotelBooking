@@ -160,9 +160,10 @@ const CheckOut = () => {
                 response = await axiosJson.post('/Payment/vnpay-payment', payload);
             }
 
-            if (response && response.status === 200) {
+            if (response.status === 200 && response.data.url) {
                 localStorage.removeItem('hotel');
                 localStorage.removeItem('booking');
+                console.log('response', response);
                 window.location.href = response.data.url;
             } else {
                 toast.error('Payment failed');

@@ -4,6 +4,7 @@ import { IoMdPerson } from 'react-icons/io';
 import SpinComponents from './Spin';
 import Search from 'antd/es/transfer/search';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const formatTime = (time) => time.slice(0, 5);
@@ -11,7 +12,10 @@ const RoomTypesTable = ({ roomTypes, hotelDetail, checkinDate, checkoutDate, adu
   const navigate = useNavigate();
   const [roomQuantities, setRoomQuantities] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
-  const [couponCode, setCouponCode] = useState('');
+  const [couponCode, setCouponCode] = useState('SALE10');
+
+  const [originalTotalPrice, setOriginalTotalPrice] = useState(0);
+  const [isCouponApplied, setIsCouponApplied] = useState(false);
   const columns = [
     {
       title: 'Hình đại diện',
@@ -122,6 +126,7 @@ const RoomTypesTable = ({ roomTypes, hotelDetail, checkinDate, checkoutDate, adu
 
     // Cập nhật totalPrice để hiển thị cho người dùng
     setTotalPrice(totalPrice);
+    setOriginalTotalPrice(totalPrice);
   };
   const [booking, setBooking] = useState({
     customerName: "",
@@ -193,10 +198,11 @@ const RoomTypesTable = ({ roomTypes, hotelDetail, checkinDate, checkoutDate, adu
     const isValidCoupon = checkCouponCode(couponCode);
 
     if (isValidCoupon) {
-      const discount = calculateDiscount(totalPrice, couponCode);
-      const discountedPrice = totalPrice - discount;
+      const discount = calculateDiscount(originalTotalPrice, couponCode);
+      const discountedPrice = originalTotalPrice - discount;
 
       setTotalPrice(discountedPrice);
+      setIsCouponApplied(true);
 
       setBooking(prevBooking => ({
         ...prevBooking,
@@ -205,9 +211,24 @@ const RoomTypesTable = ({ roomTypes, hotelDetail, checkinDate, checkoutDate, adu
         totalAmount: discountedPrice,
       }));
 
-      alert(`Áp dụng mã khuyến mãi thành công! Giảm giá: ${discount.toLocaleString()} VND`);
+      toast.success(`Áp dụng mã khuyến mãi thành công! Giảm giá: ${discount.toLocaleString()} VND`);
     } else {
-      alert('Mã khuyến mãi không hợp lệ. Vui lòng thử lại.');
+      toast.error('Mã khuyến mãi không hợp lệ. Vui lòng thử lại.');
+    }
+  };
+  const handleCouponCodeChange = (e) => {
+    const newCouponCode = e.target.value;
+    setCouponCode(newCouponCode);
+
+    if (isCouponApplied && newCouponCode === "") {
+      setTotalPrice(originalTotalPrice);
+      setBooking(prevBooking => ({
+        ...prevBooking,
+        couponCode: "",
+        discount: 0,
+        totalAmount: originalTotalPrice,
+      }));
+      setIsCouponApplied(false);
     }
   };
   const checkCouponCode = (couponCode) => {
@@ -245,8 +266,14 @@ const RoomTypesTable = ({ roomTypes, hotelDetail, checkinDate, checkoutDate, adu
       />
       <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', flexDirection: 'column', marginTop: '20px' }}>
 
-        <Input type="text" placeholder="Nhập mã khuyến mãi..." style={{ padding: '5px', width: '200px', }} />
-        <Button type="primary" style={{ width: '200px', marginTop: 10, marginBottom: 20 }} onClick={handleApplyCoupon}>
+        <Input
+          type="text"
+          placeholder="Nhập mã khuyến mãi..."
+          style={{ padding: '5px', width: '200px' }}
+
+          onChange={handleCouponCodeChange}
+        />
+        <Button disabled={isCouponApplied} type="primary" style={{ width: '200px', marginTop: 10, marginBottom: 20 }} onClick={handleApplyCoupon}>
           Gửi
         </Button>
 

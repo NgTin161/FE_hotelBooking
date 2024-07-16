@@ -28,15 +28,15 @@ function getItem(label, key, icon, children) {
 const items = [
   getItem(
 
-    <Link to="/owner/dashboard" style={{ color: '#379AE6', textDecoration: 'none' }}>
+    <Link to="/admin/dashboard" style={{ color: '#379AE6', textDecoration: 'none' }}>
       Tổng quan
     </Link>,
     "1",
     <DesktopOutlined style={{ color: '#379AE6' }} />
   ),
   getItem(
-    <NavLink to="/owner/information" style={{ color: '#379AE6', textDecoration: 'none' }}>
-      Thông tin khách sạn
+    <NavLink to="/admin/user" style={{ color: '#379AE6', textDecoration: 'none' }}>
+      Thông tin người dùng
     </NavLink>,
     "2",
     <UserOutlined style={{ color: '#379AE6' }} />
@@ -44,31 +44,17 @@ const items = [
 
 
   getItem(
-    <Link to="/owner/booking" style={{ color: '#379AE6', textDecoration: 'none' }}>
+    <Link to="/admin/booking" style={{ color: '#379AE6', textDecoration: 'none' }}>
       Danh sách Booking
     </Link>,
     "3",
     <DesktopOutlined style={{ color: '#379AE6' }} />
   ),
-  getItem(
-    <NavLink to="/owner/roomtype" style={{ color: '#379AE6', textDecoration: 'none' }}>
-      Loại phòng
-    </NavLink>,
-    "4",
-    <NotificationOutlined style={{ color: '#379AE6' }} />
-  ),
-  getItem(
-    <NavLink to="/owner/coupons" style={{ color: '#379AE6', textDecoration: 'none' }}>
-      Khuyến mãi
-    </NavLink>,
-    "4",
-    <NotificationOutlined style={{ color: '#379AE6' }} />
-  ),
+
 
 ];
 
-// const LayoutAdmin = ({ Component }) => {
-const LayoutOwner = () => {
+const LayoutAdmin = () => {
   const { user, logout } = useContext(AuthContext);
 
 
@@ -135,16 +121,14 @@ const LayoutOwner = () => {
         <Content style={{ margin: '0 16px' }}>
           {/* <Breadcrumb style={{ margin: '10px 0' }} /> */}
           <div style={{ marginTop: 30, padding: 24, minHeight: 360, background: 'white' }}>
-            {/* <Component /> */}
+
             <Outlet />
           </div>
         </Content>
-        {/* <Footer style={{ textAlign: 'center' }}>
-       
-        </Footer> */}
+
       </Layout>
     </Layout>
   );
 };
 
-export default LayoutOwner;
+export default LayoutAdmin;

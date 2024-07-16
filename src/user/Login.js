@@ -14,7 +14,6 @@ const Login = () => {
     const { login } = useContext(AuthContext);
 
 
-
     const onFinish = async (values) => {
         try {
             const response = await axiosJson.post('/Users/login', {
@@ -22,16 +21,20 @@ const Login = () => {
                 Password: values.password
             });
 
+            // Kiểm tra phản hồi từ server
             if (response.status === 200) {
-                console.log('response', response.data)
+                console.log('response', response.data);
                 login(response.data.token); // Giải mã token và lưu thông tin người dùng
                 toast.success('Đăng nhập thành công');
                 // Redirect to home or dashboard
                 window.location.href = '/';
-            } else if (response.status === 401) {
-                toast.error('Sai tên đăng nhập hoặc mật khẩu');
+            } else if (response.status === 403) {
+                toast.error('Tài khoản của bạn không hoạt động');
+            } else if (response.status === 404) {
+                toast.error('Sai tên đăng nhập hoặc mật khẩu')
             }
         } catch (error) {
+            // Xử lý lỗi khi có exception xảy ra
             console.error('Error:', error);
             toast.error('Đã xảy ra lỗi khi đăng nhập');
         }

@@ -17,6 +17,14 @@ const Header = () => {
 
     const getMenuForRoles = (roles) => {
         const menuItems = [];
+        if (roles == 'Admin') {
+            menuItems.push(
+                <Menu.Item key="statistics">
+                    <Link to="/admin/dashboard" style={{ textDecoration: 'none' }}>Thống kê</Link>
+                </Menu.Item>
+            );
+        }
+
 
         if (roles.includes('User')) {
             menuItems.push(
@@ -40,13 +48,7 @@ const Header = () => {
             );
         }
 
-        if (roles.includes('Admin')) {
-            menuItems.push(
-                <Menu.Item key="statistics">
-                    <Link to="/admin" style={{ textDecoration: 'none' }}>Thống kê</Link>
-                </Menu.Item>
-            );
-        }
+
 
         menuItems.push(
             <Menu.Item key="logout" onClick={handleLogout}>
@@ -89,7 +91,7 @@ const Header = () => {
                     </Flex>
                     {shouldDisplayRegisterHotel && (
                         <Flex gap="small" wrap>
-                            <Button className='button-user'><Link to='/registerhotel'><FontAwesomeIcon icon={faCalendarDays} /> Đăng chỗ nghỉ của bạn ?</Link></Button>
+                            <Button className='button-user'><Link style={{ textDecoration: 'none' }} to='/registerhotel'><FontAwesomeIcon icon={faCalendarDays} /> Đăng chỗ nghỉ của bạn ?</Link></Button>
                         </Flex>
                     )}
 

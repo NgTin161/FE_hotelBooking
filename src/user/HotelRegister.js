@@ -110,7 +110,7 @@ const HotelRegister = () => {
     const CheckinTime = dayjs(values.CheckinTime).format('HH:mm');
     const CheckoutTime = dayjs(values.CheckoutTime).format('HH:mm');
 
-    const province = values.province ? values.province.full_name : '';
+
     // Chọn những giá trị cần thiết từ values và mặc định giá trị cho các checkbox nếu không có
     const pickedValues = _.pick(values, [
       'hotelName', 'email', 'phoneNumber', 'ratingStarts', 'address',
@@ -136,7 +136,7 @@ const HotelRegister = () => {
     formData.append('description', description);
     formData.append('CheckinTime', CheckinTime);
     formData.append('CheckoutTime', CheckoutTime);
-    formData.append('province', province);
+    formData.append('province', selectedProvince);
 
     // Thêm các file từ fileList vào formData (nếu có)
     if (fileList && fileList.length > 0) {
