@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { AuthContext } from '../../axios/AuthContext';
 import { axiosJson } from '../../axios/axiosCustomize';
 
-const User = () => {
+const UserManager = () => {
   const { user } = useContext(AuthContext);
   const [userList, setUserList] = useState([]);
 
@@ -23,6 +23,7 @@ const User = () => {
       const response = await axiosJson.get(`/Admin/get-profile`);
       if (response.status === 200) {
         setUserList(response.data);
+        setFilteredUsers(response.data);
         console.log(response.data);
 
       } else {
@@ -57,6 +58,21 @@ const User = () => {
   };
 
 
+  const [FilteredUser, setFilteredUsers] = useState([])
+  const handleSearch = (event) => {
+    const value = event.target.value;
+
+    // Kiểm tra nếu value không tồn tại
+    if (!value) {
+      setFilteredUsers(userList); // Hiển thị lại danh sách ban đầu nếu không có giá trị tìm kiếm
+      return;
+    }
+
+    const filteredData = userList.filter(user =>
+      user.email && user.email.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredUsers(filteredData);
+  };
 
 
 
@@ -105,11 +121,15 @@ const User = () => {
 
   return (
     <>
-
-      <Table columns={columns} dataSource={userList} rowKey="id" />
+      <Input
+        placeholder="Tìm kiếm theo email"
+        onChange={handleSearch}
+        style={{ width: 250, margin: 20 }}
+      />
+      <Table columns={columns} dataSource={FilteredUser} rowKey="id" />
 
     </>
   );
 };
 
-export default User;
+export default UserManager;

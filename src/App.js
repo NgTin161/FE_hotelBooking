@@ -27,14 +27,12 @@ import { AuthProvider } from './axios/AuthContext';
 import ConfirmPayment from './user/ConfirmPayment';
 import CheckOut from './user/CheckOut';
 import HistoryUser from './user/HistoryUser';
-
 import Profile from './user/Profile';
-import User from './Admin/Pages/User';
 import LayoutAdmin from './Admin/LayoutAdmin';
 import DashBoardAdmin from './Admin/Pages/DashBoardAdmin';
-
-
-
+import HotelManager from './Admin/Pages/HotelManager';
+import UserManager from './Admin/Pages/UserManager';
+import BookingManager from './Admin/Pages/BookingManager';
 
 
 function App() {
@@ -69,7 +67,9 @@ function App() {
 
                 <Route path="/admin" element={<PrivateRoute><LayoutAdmin /></PrivateRoute>}>
                     <Route index path="dashboard" element={< DashBoardAdmin />} />
-                    <Route path="user" element={<User />}></Route>
+                    <Route path="hotel" element={<HotelManager />} />
+                    <Route path="user" element={<UserManager />} />
+                    <Route path="booking" element={<BookingManager />} />
                 </Route>
 
                 <Route path="/login" element={<Login />}></Route>

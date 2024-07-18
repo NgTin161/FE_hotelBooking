@@ -113,7 +113,7 @@ const HotelRegister = () => {
 
     // Chọn những giá trị cần thiết từ values và mặc định giá trị cho các checkbox nếu không có
     const pickedValues = _.pick(values, [
-      'hotelName', 'email', 'phoneNumber', 'ratingStarts', 'address',
+      'bankName', 'accountNumber', 'hotelName', 'email', 'phoneNumber', 'ratingStarts', 'address',
       'acceptChildren', 'acceptPet', 'supportPeopleWithDisabilities', 'haveElevator', 'haveSwimmingPool'
     ]);
 
@@ -155,11 +155,11 @@ const HotelRegister = () => {
         }
       });
       console.log('Create Hotel Response:', response.data);
-      toast.success('Tạo khách sạn thành công! Vui lòng tạo phòng và bắt đầu khách sạn của bạn');
-
+      toast.success('Tạo khách sạn thành công! Vui lòng đăng nhập lại, tạo phòng và bắt đầu khách sạn của bạn');
+      localStorage.removeItem('jwt');
       // Chuyển hướng về trang chủ sau 2 giây
       setTimeout(() => {
-        navigate('/');
+        navigate('/login');
       }, 2000);
     } catch (error) {
       console.error('Error creating hotel:', error);
@@ -319,7 +319,15 @@ const HotelRegister = () => {
                 }}
               />
             </Form.Item>
-
+            <Typography.Title level={5}>Thông tin tài khoản</Typography.Title>
+            <div style={{ display: 'flex', gap: 20 }}>
+              <Form.Item label="Tên ngân hàng " name="bankName">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Số tài khoản" name="accountNumber">
+                <Input />
+              </Form.Item>
+            </div>
             <Form.Item label="Upload hình ảnh khách sạn" name="upload">
               <Upload
                 multiple

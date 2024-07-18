@@ -239,6 +239,10 @@ const Information = () => {
         <Card style={{ border: '1px solid', marginBottom: 10 }}>
           <div dangerouslySetInnerHTML={{ __html: hotel?.description }} />
         </Card>
+
+        <h5>Thông tin tài khoản:</h5>
+        <p><strong>Tên ngân hàng</strong> {hotel?.bankName}</p>
+        <p><strong>Số tài khoản</strong> {hotel?.accountNumber}</p>
         <span><strong>Hình ảnh:</strong></span>
         <Row gutter={[8, 8]}>
           {hotel?.imageUrls.map((url, index) => (
@@ -371,7 +375,15 @@ const Information = () => {
                 <Checkbox>Có bể bơi</Checkbox>
               </Form.Item>
             </Row>
-
+            <Typography.Title level={5}>Thông tin tài khoản</Typography.Title>
+            <div style={{ display: 'flex', gap: 20 }}>
+              <Form.Item label="Tên ngân hàng " name="bankName">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Số tài khoản" name="accountNumber">
+                <Input />
+              </Form.Item>
+            </div>
             <Form.Item
               label="Miêu tả"
               name="description"

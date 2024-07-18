@@ -561,7 +561,7 @@ const BookingTable = () => {
             <p>Trạng thái: <Tag color={statusColors[selectedBooking.status]}>{statusMap[selectedBooking.status]}</Tag></p>
             <p>Người lớn: {selectedBooking.numberOfAdults} người</p>
             <p>Trẻ em: {selectedBooking.numberOfChildren} trẻ</p>
-            <p>Ghi chú: {selectedBooking.map}</p>
+            <p>Ghi chú: {selectedBooking.note}</p>
             {selectedBooking.bookingDetails && (
               <div>
                 <p><strong>Chi tiết phòng:</strong></p>

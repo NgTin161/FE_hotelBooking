@@ -36,18 +36,27 @@ const items = [
   ),
   getItem(
     <NavLink to="/admin/user" style={{ color: '#379AE6', textDecoration: 'none' }}>
-      Thông tin người dùng
+      Quản lý người dùng
     </NavLink>,
     "2",
     <UserOutlined style={{ color: '#379AE6' }} />
   ),
 
+  getItem(
+    <Link to="/admin/hotel" style={{ color: '#379AE6', textDecoration: 'none' }}>
+      Quản lý khách sạn
+    </Link>,
+    "3",
+    <DesktopOutlined style={{ color: '#379AE6' }} />
+  ),
+
+
 
   getItem(
     <Link to="/admin/booking" style={{ color: '#379AE6', textDecoration: 'none' }}>
-      Danh sách Booking
+      Quản lý booking
     </Link>,
-    "3",
+    "4",
     <DesktopOutlined style={{ color: '#379AE6' }} />
   ),
 
